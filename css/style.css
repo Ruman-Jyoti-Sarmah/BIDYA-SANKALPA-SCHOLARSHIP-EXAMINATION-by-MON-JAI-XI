@@ -1381,7 +1381,7 @@ h1, h2, h3, h4 {
   padding: 28px 0;
 }
 
-.foot-inner {
+.foot-brand {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1392,6 +1392,56 @@ h1, h2, h3, h4 {
 .foot-title { margin: 0; font-family: var(--serif); font-size: 13px; font-weight: 600; color: var(--navy); }
 .foot-sub { margin: 4px 0 0; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .foot-note { margin: 0; font-size: 11px; color: var(--muted); max-width: 34ch; }
+
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 40px;
+  margin: 22px 0 0;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.foot-col { min-width: 0; }
+
+.foot-head {
+  margin: 0 0 9px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.foot-text { margin: 0; font-size: 11.5px; line-height: 1.7; color: var(--muted); max-width: 52ch; }
+
+.foot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(15, 44, 87, 0.28);
+  padding-bottom: 2px;
+}
+
+.foot-link:hover, .foot-link:focus-visible { color: var(--orange); border-color: var(--orange); }
+.foot-link svg { width: 12px; height: 12px; }
+
+.foot-credit {
+  margin: 22px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.foot-credit strong { font-weight: 600; color: var(--navy); }
 
 /* ---------------- sponsor popup ---------------- */
 .promo {
@@ -1576,7 +1626,9 @@ body.has-promo { overflow: hidden; }
   .ms-scores { grid-template-columns: 1fr 1fr; }
   .ms-cell:nth-child(2) { border-right: 0; }
   .ms-cell:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid var(--line-soft); }
-  .foot-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .foot-brand { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+  .foot-grid { grid-template-columns: 1fr; gap: 20px; }
 
   .promo-card { padding: 22px 18px 18px; }
   .promo-logo { width: 112px; }
