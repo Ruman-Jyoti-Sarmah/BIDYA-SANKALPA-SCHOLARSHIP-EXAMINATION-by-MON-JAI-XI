@@ -307,6 +307,18 @@ h1, h2, h3, h4 {
     linear-gradient(0deg, rgba(8, 24, 48, 0.55), transparent 45%);
 }
 
+.hero-emblem {
+  display: block;
+  width: clamp(66px, 7.6vw, 86px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  margin: 0 0 clamp(16px, 2vw, 22px);
+  border-radius: 16px;
+  background: #04070d;
+  box-shadow: 0 16px 38px rgba(2, 8, 20, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
 .hero-copy {
   position: relative;
   z-index: 1;

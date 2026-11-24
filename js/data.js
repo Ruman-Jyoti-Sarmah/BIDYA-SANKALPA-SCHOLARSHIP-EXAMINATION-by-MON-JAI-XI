@@ -16,6 +16,7 @@ const EXAM = {
   /* Brand assets */
   logo: "assets/brand/logo.jpeg",
   heroImage: "assets/img/hero.jpg",
+  monLogo: "assets/brand/mon-jai-xi.jpeg",
   heroImageAlt: "Students of Pathsala Public School in their school uniform"
 };
 

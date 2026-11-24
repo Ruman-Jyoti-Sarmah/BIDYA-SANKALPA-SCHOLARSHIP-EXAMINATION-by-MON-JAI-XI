@@ -93,6 +93,7 @@
       '<img class="slide-bg" src="' + esc(EXAM.heroImage) + '" alt="' + esc(EXAM.heroImageAlt) + '" />' +
       '<span class="slide-scrim" aria-hidden="true"></span>' +
       '<div class="hero-copy">' +
+        '<img class="hero-emblem" src="' + esc(EXAM.monLogo) + '" alt="MON JAI XI emblem" width="96" height="96" />' +
         '<p class="kicker kicker-light"><span class="kicker-dot"></span>Session ' + EXAM.session + '<span class="kicker-sep">/</span>Merit list published</p>' +
         '<h1 class="hero-title"><span class="t-main">Bidya Sankalpa</span><span class="t-sub">Scholarship Examination</span></h1>' +
         '<p class="byline">by <strong>MON JAI XI</strong></p>' +
