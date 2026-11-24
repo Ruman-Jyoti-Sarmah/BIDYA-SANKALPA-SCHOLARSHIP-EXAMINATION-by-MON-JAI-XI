@@ -465,6 +465,7 @@
   }
 
   /* ---------------- sponsor popup ---------------- */
+  var PROMO_FIRST = 30000;
   var PROMO_EVERY = 120000;
 
   function initPromo() {
@@ -506,7 +507,10 @@
     });
 
     document.addEventListener("site:ready", function () {
-      window.setInterval(open, PROMO_EVERY);
+      window.setTimeout(function () {
+        open();
+        window.setInterval(open, PROMO_EVERY);
+      }, PROMO_FIRST);
     });
   }
 
