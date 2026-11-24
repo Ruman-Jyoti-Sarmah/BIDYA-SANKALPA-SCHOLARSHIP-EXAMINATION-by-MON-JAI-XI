@@ -464,6 +464,52 @@
     start();
   }
 
+  /* ---------------- sponsor popup ---------------- */
+  var PROMO_EVERY = 120000;
+
+  function initPromo() {
+    var root = document.getElementById("promo");
+    if (!root) return;
+
+    var closeBtn = root.querySelector(".promo-close");
+    var lastFocus = null;
+
+    function open() {
+      if (!root.hidden || document.hidden) return;
+      lastFocus = document.activeElement;
+      root.hidden = false;
+      document.body.classList.add("has-promo");
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+      if (root.hidden) return;
+      root.hidden = true;
+      document.body.classList.remove("has-promo");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      lastFocus = null;
+    }
+
+    root.addEventListener("click", function (e) {
+      if (e.target.closest("[data-promo-close]")) close();
+    });
+
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { close(); return; }
+      if (e.key !== "Tab") return;
+      var items = Array.prototype.slice.call(root.querySelectorAll("a[href], button"));
+      if (!items.length) return;
+      var first = items[0];
+      var last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
+    document.addEventListener("site:ready", function () {
+      window.setInterval(open, PROMO_EVERY);
+    });
+  }
+
   /* ---------------- preloader ---------------- */
   function initPreloader() {
     var el = document.getElementById("preloader");
@@ -502,6 +548,7 @@
 
   window.addEventListener("hashchange", render);
 
+  initPromo();
   initPreloader();
   render();
 })();
