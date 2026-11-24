@@ -422,11 +422,15 @@
       setActive(next);
     }
 
+    function tick() {
+      var current = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      go(current + 1);
+    }
+
     function start() {
-      if (reduceMotion) return;
       stop();
       if (!document.body.classList.contains("is-loaded")) return;
-      timer = window.setInterval(function () { go(index + 1); }, 3500);
+      timer = window.setInterval(tick, 3000);
     }
 
     function stop() { if (timer) { window.clearInterval(timer); timer = null; } }
@@ -444,8 +448,6 @@
       });
     });
 
-    root.addEventListener("pointerenter", stop);
-    root.addEventListener("pointerleave", start);
     root.addEventListener("focusin", stop);
     root.addEventListener("focusout", start);
 
@@ -461,12 +463,11 @@
     document.addEventListener("site:ready", start);
 
     setActive(0);
-    start();
   }
 
   /* ---------------- sponsor popup ---------------- */
-  var PROMO_FIRST = 30000;
-  var PROMO_EVERY = 120000;
+  var PROMO_FIRST = 400;
+  var PROMO_EVERY = 30000;
 
   function initPromo() {
     var root = document.getElementById("promo");
@@ -474,6 +475,7 @@
 
     var closeBtn = root.querySelector(".promo-close");
     var lastFocus = null;
+    var promoTimer = null;
 
     function open() {
       if (!root.hidden || document.hidden) return;
@@ -509,9 +511,19 @@
     document.addEventListener("site:ready", function () {
       window.setTimeout(function () {
         open();
-        window.setInterval(open, PROMO_EVERY);
+        promoTimer = window.setInterval(open, PROMO_EVERY);
       }, PROMO_FIRST);
     });
+
+    /* keep the rotation running even when the tab was hidden during load */
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) restartPromo();
+    });
+
+    function restartPromo() {
+      if (promoTimer) window.clearInterval(promoTimer);
+      promoTimer = window.setInterval(open, PROMO_EVERY);
+    }
   }
 
   /* ---------------- preloader ---------------- */
