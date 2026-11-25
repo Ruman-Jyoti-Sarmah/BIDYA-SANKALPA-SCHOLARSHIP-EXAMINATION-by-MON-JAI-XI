@@ -33,12 +33,20 @@
     });
   })();
 
-  /* classes that actually have candidates, in order (class 10 is skipped
-     automatically when nobody from that class appeared) */
+  /* classes offered in the filter: taken from EXAM.classes (classes 6-10),
+     or from the student data when that list is missing */
   var CLASSES = (function () {
+    var list = EXAM.classes && EXAM.classes.length ? EXAM.classes : (function () {
+      var seen = {};
+      ranked.forEach(function (s) { if (s.cls) seen[s.cls] = true; });
+      return Object.keys(seen);
+    })();
     var seen = {};
-    ranked.forEach(function (s) { if (s.cls) seen[s.cls] = true; });
-    return Object.keys(seen).sort(function (a, b) {
+    return list.map(String).filter(function (c) {
+      if (!c || seen[c]) return false;
+      seen[c] = true;
+      return true;
+    }).sort(function (a, b) {
       var na = parseFloat(a), nb = parseFloat(b);
       if (!isNaN(na) && !isNaN(nb) && na !== nb) return na - nb;
       return a.localeCompare(b);
@@ -362,6 +370,12 @@
       box.hidden = false;
 
       if (!matches.length) {
+        if (!term && !list.length) {
+          box.innerHTML = '<p class="empty">No candidate from Class ' + esc(cls) +
+            " appeared in this examination. Choose another class to see its results.</p>";
+          return;
+        }
+
         box.innerHTML = '<p class="empty">No candidate found' + (cls ? " in Class " + esc(cls) : "") +
           (term ? " for &ldquo;" + esc(query.trim()) + "&rdquo;" : "") +
           ". Check the spelling of the name, the roll number or the class and try again.</p>";

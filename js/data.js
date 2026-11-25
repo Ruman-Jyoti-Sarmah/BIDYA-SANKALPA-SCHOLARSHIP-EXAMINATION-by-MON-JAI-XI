@@ -13,6 +13,10 @@ const EXAM = {
   totalMarks: 39,
   resultLabel: "RESULTS FOR PATHSALA PUBLIC SCHOOL STUDENTS (2026-27)",
   answerLabel: "Answers Sheet for PATHSALA PUBLIC SCHOOL (2026-27)",
+  /* Classes the exam was held for. Every class listed here shows up in the
+     class filter on the results page, even when no candidate from that
+     class appeared. */
+  classes: ["6", "7", "8", "9", "10"],
   /* Brand assets */
   logo: "assets/brand/logo.jpeg",
   heroImage: "assets/img/hero.jpg",
@@ -34,9 +38,9 @@ const ANSWER_KEY = [
    The three photos currently used are free stock placeholders.
 
    cls: the class the candidate studies in ("6", "7", "8", "9", "10").
-   Write it always as a string. The exam was held for classes 6 to 10, but
-   only the classes present in this list appear in the class filter, so a
-   class with no candidates (for example class 10) never shows up.
+   Write it always as a string. The classes offered by the filter come from
+   EXAM.classes above; a class with no candidates (for example class 10)
+   still appears in the dropdown and simply says nobody appeared from it.
    Ranking stays one common merit list across all classes. */
 const STUDENTS = [
   { roll: "01", name: "Abir Chakraborty",  marks: 29, cls: "7", photo: "" },
