@@ -258,7 +258,6 @@
     '<section class="panel search-panel">' +
       '<div class="panel-head">' +
         "<h3>Search your result</h3>" +
-        '<span class="panel-hint">Press <kbd>/</kbd> to focus</span>' +
       "</div>" +
       '<form id="searchForm" class="search-form" role="search">' +
         '<label class="field">' +
