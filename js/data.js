@@ -9,8 +9,8 @@ const EXAM = {
   school: "PATHSALA PUBLIC SCHOOL",
   session: "2026-27",
   totalQuestions: 39,
-  marksPerQuestion: 1,
-  totalMarks: 60,
+  /* the paper was evaluated out of 100 marks */
+  totalMarks: 100,
   resultLabel: "RESULTS FOR PATHSALA PUBLIC SCHOOL STUDENTS (2026-27)",
   answerLabel: "Answers Sheet for PATHSALA PUBLIC SCHOOL (2026-27)",
   /* Classes the exam was held for. Every class listed here shows up in the
