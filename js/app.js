@@ -75,15 +75,6 @@
   var restOfList = ranked.filter(function (s) { return s.rank > 10; });
 
   /* ---------------- helpers ---------------- */
-  function gradeOf(percent) {
-    if (percent >= 90) return "A+";
-    if (percent >= 80) return "A";
-    if (percent >= 70) return "B";
-    if (percent >= 60) return "C";
-    if (percent >= 50) return "D";
-    return "E";
-  }
-
   function initials(name) {
     return name.trim().split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0); }).join("").toUpperCase();
   }
@@ -149,7 +140,6 @@
         '<dl class="topper-facts">' +
           "<div><dt>Marks obtained</dt><dd>" + s.marks + "<small>/" + total + "</small></dd></div>" +
           "<div><dt>Percentage</dt><dd>" + s.percent.toFixed(1) + "%</dd></div>" +
-          "<div><dt>Grade</dt><dd>" + gradeOf(s.percent) + "</dd></div>" +
         "</dl>" +
         '<a class="btn btn-ghost btn-sm" href="#results">View the merit list' + ICON.arrow + "</a>" +
       "</div>" +
@@ -223,7 +213,7 @@
       '<span class="honour-roll">Roll No. ' + esc(s.roll) + "</span>" +
       '<span class="honour-score">' + s.marks + '<small>/' + total + "</small></span>" +
       '<span class="honour-bar"><i style="width:' + s.percent.toFixed(1) + '%"></i></span>' +
-      '<span class="honour-pct">' + s.percent.toFixed(1) + "% &middot; Grade " + gradeOf(s.percent) + "</span>" +
+      '<span class="honour-pct">' + s.percent.toFixed(1) + "%</span>" +
     "</article>";
   }
 
@@ -237,12 +227,11 @@
       '<span class="who">' + avatar(s, "sm") + '<span class="who-txt"><strong>' + esc(s.name) + "</strong><small>" + rowMeta(s) + "</small></span></span>" +
       '<span class="score">' + s.marks + '<small>/' + total + "</small></span>" +
       '<span class="pct">' + s.percent.toFixed(1) + "%</span>" +
-      '<span class="grade">' + gradeOf(s.percent) + "</span>" +
     "</div>";
   }
 
   function tableHead() {
-    return '<div class="row row-head"><span>Rank</span><span>Student</span><span>Marks</span><span>Percent</span><span>Grade</span></div>';
+    return '<div class="row row-head"><span>Rank</span><span>Student</span><span>Marks</span><span>Percent</span></div>';
   }
 
   function results() {
@@ -324,7 +313,6 @@
       '<div class="ms-scores">' +
         '<div class="ms-cell"><span>Marks obtained</span><strong>' + s.marks + "<small>/" + total + "</small></strong></div>" +
         '<div class="ms-cell"><span>Percentage</span><strong>' + s.percent.toFixed(1) + "%</strong></div>" +
-        '<div class="ms-cell"><span>Grade</span><strong>' + gradeOf(s.percent) + "</strong></div>" +
       "</div>" +
 
       '<footer class="ms-foot">' +
