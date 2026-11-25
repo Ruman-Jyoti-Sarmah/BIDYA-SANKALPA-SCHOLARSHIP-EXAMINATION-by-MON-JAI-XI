@@ -12,8 +12,9 @@
 
   /* ---------------- ranking ---------------- */
   var ranked = (function () {
+    /* marks only: ties keep the order in which they were entered */
     var sorted = STUDENTS.slice().sort(function (a, b) {
-      return b.marks - a.marks || a.name.localeCompare(b.name);
+      return b.marks - a.marks;
     });
     var lastMarks = null;
     var lastRank = 0;
@@ -68,6 +69,10 @@
   })();
 
   var topThree = ranked.slice(0, 3);
+
+  /* ranks 1-10 including everyone who shares 10th place */
+  var topTens = ranked.filter(function (s) { return s.rank <= 10; });
+  var restOfList = ranked.filter(function (s) { return s.rank > 10; });
 
   /* ---------------- helpers ---------------- */
   function gradeOf(percent) {
@@ -132,7 +137,9 @@
   function topperSlide(s, i) {
     return '<article class="slide slide-topper" aria-roledescription="slide" aria-label="' + (i + 2) + ' of 4">' +
       '<div class="topper-photo">' +
-        '<img src="' + esc(s.photo) + '" alt="' + esc(s.name) + '" style="object-position:' + PHOTO_POS[i] + '" />' +
+        (s.photo
+          ? '<img src="' + esc(s.photo) + '" alt="' + esc(s.name) + '" style="object-position:' + PHOTO_POS[i] + '" />'
+          : '<span class="topper-monogram" aria-hidden="true">' + initials(s.name) + "</span>") +
         '<span class="rank-chip"><small>Rank</small>' + (i + 1) + "</span>" +
       "</div>" +
       '<div class="topper-body">' +
@@ -195,7 +202,7 @@
           '<span class="notice-title">' + EXAM.answerLabel + "</span>" +
           '<span class="notice-desc">Correct options for all ' + EXAM.totalQuestions + " questions, published for reference.</span>" +
         "</span>" +
-        '<span class="notice-meta"><span>' + EXAM.totalQuestions + " questions</span><span>" + EXAM.marksPerQuestion + " mark each</span></span>" +
+        '<span class="notice-meta"><span>' + EXAM.totalQuestions + " questions</span><span>" + total + " marks</span></span>" +
         '<span class="notice-arrow">' + ICON.arrow + "</span>" +
       "</a>" +
     "</section>";
@@ -245,7 +252,7 @@
     '<header class="page-title">' +
       '<p class="kicker kicker-quiet">Session ' + EXAM.session + " &middot; Pathsala Public School</p>" +
       "<h2>" + EXAM.resultLabel + "</h2>" +
-      "<p>Compiled from the evaluated answer scripts of every candidate. Each question carries " + EXAM.marksPerQuestion + " mark.</p>" +
+      "<p>Compiled from the evaluated answer scripts of every candidate, on one common merit list for classes 6 to 10.</p>" +
     "</header>" +
 
     '<section class="stats">' +
@@ -284,13 +291,14 @@
 
     '<section class="panel">' +
       '<div class="panel-head"><h3>Top 10 results</h3><span class="panel-hint">Ranks 1&ndash;10</span></div>' +
-      '<div class="table">' + tableHead() + ranked.slice(0, 10).map(row).join("") + "</div>" +
+      '<div class="table">' + tableHead() + topTens.map(row).join("") + "</div>" +
     "</section>" +
 
-    '<section class="panel">' +
-      '<div class="panel-head"><h3>Complete merit list</h3><span class="panel-hint">Ranks 11&ndash;' + ranked.length + "</span></div>" +
-      '<div class="table">' + tableHead() + ranked.slice(10).map(row).join("") + "</div>" +
-    "</section>" +
+    (restOfList.length ?
+      '<section class="panel">' +
+        '<div class="panel-head"><h3>Complete merit list</h3><span class="panel-hint">Ranks 11&ndash;' + ranked.length + "</span></div>" +
+        '<div class="table">' + tableHead() + restOfList.map(row).join("") + "</div>" +
+      "</section>" : "") +
 
           '<p class="note">Ranking is decided by total marks on one common merit list for classes 6 to 10; candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
   }
@@ -320,7 +328,7 @@
       "</div>" +
 
       '<footer class="ms-foot">' +
-        "<p>Each question carries " + EXAM.marksPerQuestion + " mark. Total marks " + total + ".</p>" +
+        "<p>Marks obtained are out of a total of " + total + ".</p>" +
         '<button class="btn btn-ghost btn-sm" id="printBtn" type="button">' + ICON.print + "Print / Save PDF</button>" +
       "</footer>" +
     "</article>";
@@ -434,7 +442,7 @@
     '<header class="page-title">' +
       '<p class="kicker kicker-quiet">Answer key &middot; Session ' + EXAM.session + "</p>" +
       "<h2>" + EXAM.answerLabel + "</h2>" +
-      "<p>Correct options for all " + EXAM.totalQuestions + " questions. Each question carries " + EXAM.marksPerQuestion + " mark.</p>" +
+      "<p>Correct options for all " + EXAM.totalQuestions + " questions, published for reference.</p>" +
     "</header>" +
 
     '<section class="panel answer-panel">' +

@@ -420,8 +420,21 @@ h1, h2, h3, h4 {
 
 .topper-photo {
   position: relative;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   background: var(--paper-2);
+}
+
+/* candidates without a photograph show a quiet monogram instead */
+.topper-monogram {
+  font-family: var(--serif);
+  font-size: clamp(76px, 10vw, 132px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: rgba(15, 44, 87, 0.16);
+  user-select: none;
 }
 
 .topper-photo img {
