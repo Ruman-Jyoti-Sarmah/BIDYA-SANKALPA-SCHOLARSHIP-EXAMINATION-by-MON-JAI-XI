@@ -1048,7 +1048,69 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 0 3px rgba(217, 122, 43, 0.14);
 }
 
+.field-select { flex: 0 1 196px; }
+
+.field-select select {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  padding: 11px 34px 11px 42px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: #fbf8f0;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.field-select::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.field-select select:focus {
+  border-color: var(--orange);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(217, 122, 43, 0.14);
+}
+
 .search-result { margin-top: 16px; display: grid; gap: 12px; }
+
+.class-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 14px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.class-bar-title {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.class-bar-meta {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 
 .multi { margin: 0; font-size: 12px; color: var(--muted); }
 
@@ -1102,7 +1164,7 @@ h1, h2, h3, h4 {
 
 .ms-fields {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
   background: var(--line-soft);
 }
@@ -1609,6 +1671,7 @@ body.has-promo { overflow: hidden; }
   .notice-meta { display: none; }
 
   .ms-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ms-fields .ms-field:nth-child(5) { grid-column: 1 / -1; }
   .ms-type { display: none; }
   .ms-logo { height: 30px; }
 
@@ -1649,7 +1712,7 @@ body.has-promo { overflow: hidden; }
   body { background: #fff; }
   body::before, .preloader, .ribbon, .site-head, .site-foot, .crumb, .page-title, .stats,
   .honour-board, .panel-head, .search-form, .note, .panel:not(.search-panel),
-  .multi, .empty { display: none !important; }
+  .multi, .empty, .class-bar { display: none !important; }
 
   #view { width: auto; padding: 0; margin: 0; animation: none; }
   .panel, .search-panel { border: 0; padding: 0; margin: 0; box-shadow: none; }

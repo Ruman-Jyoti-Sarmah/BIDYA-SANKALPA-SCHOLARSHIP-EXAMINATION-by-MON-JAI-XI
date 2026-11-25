@@ -25,10 +25,23 @@
         roll: s.roll,
         name: s.name,
         marks: s.marks,
+        cls: s.cls ? String(s.cls) : "",
         photo: s.photo || "",
         rank: rank,
         percent: (s.marks / total) * 100
       };
+    });
+  })();
+
+  /* classes that actually have candidates, in order (class 10 is skipped
+     automatically when nobody from that class appeared) */
+  var CLASSES = (function () {
+    var seen = {};
+    ranked.forEach(function (s) { if (s.cls) seen[s.cls] = true; });
+    return Object.keys(seen).sort(function (a, b) {
+      var na = parseFloat(a), nb = parseFloat(b);
+      if (!isNaN(na) && !isNaN(nb) && na !== nb) return na - nb;
+      return a.localeCompare(b);
     });
   })();
 
@@ -79,6 +92,7 @@
     chevronLeft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>',
     chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>',
+    filter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M7 12h10M10 17h4"/></svg>',
     print: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5"/><path d="M7 18H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v6H7z"/></svg>',
     back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H6M11 6l-6 6 6 6"/></svg>'
   };
@@ -198,10 +212,14 @@
     "</article>";
   }
 
+  function rowMeta(s) {
+    return "Roll No. " + esc(s.roll) + (s.cls ? " &middot; Class " + esc(s.cls) : "");
+  }
+
   function row(s) {
     return '<div class="row">' +
       '<span class="rank' + (s.rank <= 3 ? " is-top" : "") + '">' + s.rank + "</span>" +
-      '<span class="who">' + avatar(s, "sm") + '<span class="who-txt"><strong>' + esc(s.name) + "</strong><small>Roll No. " + esc(s.roll) + "</small></span></span>" +
+      '<span class="who">' + avatar(s, "sm") + '<span class="who-txt"><strong>' + esc(s.name) + "</strong><small>" + rowMeta(s) + "</small></span></span>" +
       '<span class="score">' + s.marks + '<small>/' + total + "</small></span>" +
       '<span class="pct">' + s.percent.toFixed(1) + "%</span>" +
       '<span class="grade">' + gradeOf(s.percent) + "</span>" +
@@ -243,6 +261,14 @@
           '<span class="field-icon">' + ICON.search + "</span>" +
           '<input id="searchInput" type="search" placeholder="Your name or roll number" autocomplete="off" aria-label="Search by name or roll number" />' +
         "</label>" +
+        (CLASSES.length ?
+          '<label class="field field-select">' +
+            '<span class="field-icon">' + ICON.filter + "</span>" +
+            '<select id="classSelect" aria-label="Show the results of one class">' +
+              '<option value="">All classes</option>' +
+              CLASSES.map(function (c) { return '<option value="' + esc(c) + '">Class ' + esc(c) + "</option>"; }).join("") +
+            "</select>" +
+          "</label>" : "") +
         '<button class="btn" type="submit">Search</button>' +
       "</form>" +
       '<div id="searchResult" class="search-result" hidden></div>' +
@@ -258,7 +284,7 @@
       '<div class="table">' + tableHead() + ranked.slice(10).map(row).join("") + "</div>" +
     "</section>" +
 
-    '<p class="note">Ranking is decided by total marks; candidates with equal marks share a rank.</p>';
+          '<p class="note">Ranking is decided by total marks on one common merit list for classes 6 to 10; candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
   }
 
   /* ---------------- marksheet ---------------- */
@@ -274,6 +300,7 @@
       '<div class="ms-fields">' +
         '<div class="ms-field"><span>Candidate</span><strong>' + esc(s.name) + "</strong></div>" +
         '<div class="ms-field"><span>Roll No.</span><strong>' + esc(s.roll) + "</strong></div>" +
+        '<div class="ms-field"><span>Class</span><strong>' + (s.cls ? esc(s.cls) : "&mdash;") + "</strong></div>" +
         '<div class="ms-field"><span>Rank</span><strong>' + s.rank + " of " + ranked.length + "</strong></div>" +
         '<div class="ms-field"><span>Status</span><strong class="' + (passed ? "ok" : "no") + '">' + (passed ? "Passed" : "Not passed") + "</strong></div>" +
       "</div>" +
@@ -297,26 +324,51 @@
     if (!form) return;
 
     var input = document.getElementById("searchInput");
+    var select = document.getElementById("classSelect");
     var box = document.getElementById("searchResult");
 
     function normalize(text) { return text.trim().toLowerCase().replace(/^0+(?=\d)/, ""); }
+    function chosenClass() { return select ? select.value : ""; }
+
+    function candidates() {
+      var cls = chosenClass();
+      return cls ? ranked.filter(function (s) { return s.cls === cls; }) : ranked;
+    }
+
+    function classTable(list) {
+      return '<div class="class-bar">' +
+        '<span class="class-bar-title">Class ' + esc(chosenClass()) + " results</span>" +
+        '<span class="class-bar-meta">' + list.length + (list.length === 1 ? " candidate" : " candidates") + " &middot; common merit list</span>" +
+      "</div>" +
+      '<div class="table">' + tableHead() + list.map(row).join("") + "</div>";
+    }
 
     function show(query) {
       var term = query.trim().toLowerCase();
-      if (!term) { box.hidden = true; box.innerHTML = ""; return; }
+      var cls = chosenClass();
 
-      var byRoll = ranked.filter(function (s) { return normalize(s.roll) === normalize(term); });
-      var matches = byRoll.length ? byRoll : ranked.filter(function (s) {
-        return s.name.toLowerCase().indexOf(term) !== -1;
-      });
+      if (!term && !cls) { box.hidden = true; box.innerHTML = ""; return; }
+
+      var list = candidates();
+      var matches = list;
+
+      if (term) {
+        var byRoll = list.filter(function (s) { return normalize(s.roll) === normalize(term); });
+        matches = byRoll.length ? byRoll : list.filter(function (s) {
+          return s.name.toLowerCase().indexOf(term) !== -1;
+        });
+      }
 
       box.hidden = false;
 
       if (!matches.length) {
-        box.innerHTML = '<p class="empty">No candidate found for &ldquo;' + esc(query.trim()) +
-          "&rdquo;. Check the spelling of the name or the roll number and try again.</p>";
+        box.innerHTML = '<p class="empty">No candidate found' + (cls ? " in Class " + esc(cls) : "") +
+          (term ? " for &ldquo;" + esc(query.trim()) + "&rdquo;" : "") +
+          ". Check the spelling of the name, the roll number or the class and try again.</p>";
         return;
       }
+
+      if (!term) { box.innerHTML = classTable(matches); return; }
 
       box.innerHTML = matches.slice(0, 4).map(marksheet).join("") +
         (matches.length > 1 ? '<p class="multi">' + matches.length + " candidates matched. Refine the search with a roll number.</p>" : "");
@@ -327,8 +379,12 @@
 
     form.addEventListener("submit", function (e) { e.preventDefault(); show(input.value); });
 
+    if (select) {
+      select.addEventListener("change", function () { show(input.value); });
+    }
+
     input.addEventListener("input", function () {
-      if (input.value.trim().length >= 2) show(input.value);
+      if (input.value.trim().length >= 2 || chosenClass()) show(input.value);
       else { box.hidden = true; box.innerHTML = ""; }
     });
 

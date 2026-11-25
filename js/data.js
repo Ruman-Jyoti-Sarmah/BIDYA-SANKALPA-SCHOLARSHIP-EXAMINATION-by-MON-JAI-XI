@@ -28,35 +28,41 @@ const ANSWER_KEY = [
   "B", "A", "A", "B", "A", "A", "A", "A", "A"
 ];
 
-/* Students — sample entries. Replace the names, roll numbers and marks
+/* Students — sample entries. Replace the names, roll numbers, class and marks
    with the real ones. To show a real photo, put the file in
    assets/students/ and set photo: "assets/students/roll-07.jpg".
-   The three photos currently used are free stock placeholders. */
+   The three photos currently used are free stock placeholders.
+
+   cls: the class the candidate studies in ("6", "7", "8", "9", "10").
+   Write it always as a string. The exam was held for classes 6 to 10, but
+   only the classes present in this list appear in the class filter, so a
+   class with no candidates (for example class 10) never shows up.
+   Ranking stays one common merit list across all classes. */
 const STUDENTS = [
-  { roll: "01", name: "Abir Chakraborty",  marks: 29, photo: "" },
-  { roll: "02", name: "Amit Barman",       marks: 21, photo: "" },
-  { roll: "03", name: "Arnab Chatterjee",  marks: 34, photo: "" },
-  { roll: "04", name: "Bikash Sardar",     marks: 17, photo: "" },
-  { roll: "05", name: "Debjit Mondal",     marks: 25, photo: "" },
-  { roll: "06", name: "Sangita Das",       marks: 14, photo: "" },
-  { roll: "07", name: "Ananya Das",        marks: 38, photo: "assets/students/topper-1.jpg" },
-  { roll: "08", name: "Payel Mondal",      marks: 16, photo: "" },
-  { roll: "09", name: "Ishita Banerjee",   marks: 32, photo: "" },
-  { roll: "10", name: "Kaushik Barui",     marks: 23, photo: "" },
-  { roll: "11", name: "Priyanka Roy",      marks: 33, photo: "" },
-  { roll: "12", name: "Diya Pal",          marks: 30, photo: "" },
-  { roll: "13", name: "Rupam Ghosh",       marks: 15, photo: "" },
-  { roll: "14", name: "Trisha Dutta",      marks: 18, photo: "" },
-  { roll: "15", name: "Mousumi Ghosh",     marks: 28, photo: "" },
-  { roll: "16", name: "Srijita Paul",      marks: 22, photo: "" },
-  { roll: "17", name: "Ritwik Ghosh",      marks: 37, photo: "assets/students/topper-2.jpg" },
-  { roll: "18", name: "Nandini Roy",       marks: 20, photo: "" },
-  { roll: "19", name: "Sourav Dey",        marks: 33, photo: "" },
-  { roll: "20", name: "Puja Adhikari",     marks: 24, photo: "" },
-  { roll: "21", name: "Rahul Sarkar",      marks: 31, photo: "" },
-  { roll: "22", name: "Tanmoy Nandi",      marks: 27, photo: "" },
-  { roll: "23", name: "Sneha Mondal",      marks: 35, photo: "assets/students/topper-3.jpg" },
-  { roll: "24", name: "Riya Saha",         marks: 26, photo: "" },
-  { roll: "25", name: "Suman Halder",      marks: 19, photo: "" },
-  { roll: "26", name: "Arindam Sen",       marks: 12, photo: "" }
+  { roll: "01", name: "Abir Chakraborty",  marks: 29, cls: "7", photo: "" },
+  { roll: "02", name: "Amit Barman",       marks: 21, cls: "6", photo: "" },
+  { roll: "03", name: "Arnab Chatterjee",  marks: 34, cls: "8", photo: "" },
+  { roll: "04", name: "Bikash Sardar",     marks: 17, cls: "6", photo: "" },
+  { roll: "05", name: "Debjit Mondal",     marks: 25, cls: "9", photo: "" },
+  { roll: "06", name: "Sangita Das",       marks: 14, cls: "7", photo: "" },
+  { roll: "07", name: "Ananya Das",        marks: 38, cls: "8", photo: "assets/students/topper-1.jpg" },
+  { roll: "08", name: "Payel Mondal",      marks: 16, cls: "6", photo: "" },
+  { roll: "09", name: "Ishita Banerjee",   marks: 32, cls: "9", photo: "" },
+  { roll: "10", name: "Kaushik Barui",     marks: 23, cls: "8", photo: "" },
+  { roll: "11", name: "Priyanka Roy",      marks: 33, cls: "9", photo: "" },
+  { roll: "12", name: "Diya Pal",          marks: 30, cls: "7", photo: "" },
+  { roll: "13", name: "Rupam Ghosh",       marks: 15, cls: "6", photo: "" },
+  { roll: "14", name: "Trisha Dutta",      marks: 18, cls: "8", photo: "" },
+  { roll: "15", name: "Mousumi Ghosh",     marks: 28, cls: "9", photo: "" },
+  { roll: "16", name: "Srijita Paul",      marks: 22, cls: "7", photo: "" },
+  { roll: "17", name: "Ritwik Ghosh",      marks: 37, cls: "8", photo: "assets/students/topper-2.jpg" },
+  { roll: "18", name: "Nandini Roy",       marks: 20, cls: "6", photo: "" },
+  { roll: "19", name: "Sourav Dey",        marks: 33, cls: "9", photo: "" },
+  { roll: "20", name: "Puja Adhikari",     marks: 24, cls: "7", photo: "" },
+  { roll: "21", name: "Rahul Sarkar",      marks: 31, cls: "8", photo: "" },
+  { roll: "22", name: "Tanmoy Nandi",      marks: 27, cls: "6", photo: "" },
+  { roll: "23", name: "Sneha Mondal",      marks: 35, cls: "9", photo: "assets/students/topper-3.jpg" },
+  { roll: "24", name: "Riya Saha",         marks: 26, cls: "7", photo: "" },
+  { roll: "25", name: "Suman Halder",      marks: 19, cls: "8", photo: "" },
+  { roll: "26", name: "Arindam Sen",       marks: 12, cls: "6", photo: "" }
 ];
