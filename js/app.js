@@ -107,7 +107,7 @@
 
   var PLACE = ["First", "Second", "Third"];
   var ORDINAL = ["1st", "2nd", "3rd"];
-  var PHOTO_POS = ["50% 20%", "52% 14%", "50% 24%"];
+  var PHOTO_POS = ["50% 20%", "52% 16%", "50% 10%"];
 
   /* ---------------- home: hero slider ---------------- */
   function heroSlide() {
