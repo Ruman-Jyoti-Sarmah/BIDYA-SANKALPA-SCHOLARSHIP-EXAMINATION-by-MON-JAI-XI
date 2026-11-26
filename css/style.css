@@ -1137,6 +1137,23 @@ h1, h2, h3, h4 {
   font-size: 13.5px;
 }
 
+.reject-note {
+  margin: 18px 0 26px;
+  padding: 14px 17px;
+  border: 1px solid var(--line);
+  border-left: 3px solid #b4690e;
+  border-radius: 3px;
+  background: var(--orange-wash);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.reject-note strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
 /* ---------------- marksheet ---------------- */
 .marksheet {
   border: 1px solid var(--line);

@@ -75,6 +75,10 @@
   var restOfList = ranked.filter(function (s) { return s.rank > 10; });
 
   /* ---------------- helpers ---------------- */
+  function rollLabel(s) {
+    return s.roll ? "Roll No. " + esc(s.roll) : "Roll No. not given";
+  }
+
   function initials(name) {
     return name.trim().split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0); }).join("").toUpperCase();
   }
@@ -136,7 +140,7 @@
       '<div class="topper-body">' +
         '<p class="kicker">' + PLACE[i] + " position &middot; Session " + EXAM.session + "</p>" +
         '<h2 class="topper-name">' + esc(s.name) + "</h2>" +
-        '<p class="topper-roll">Roll No. ' + esc(s.roll) + " &middot; Pathsala Public School</p>" +
+        '<p class="topper-roll">' + rollLabel(s) + " &middot; Pathsala Public School</p>" +
         '<dl class="topper-facts">' +
           "<div><dt>Marks obtained</dt><dd>" + s.marks + "<small>/" + total + "</small></dd></div>" +
           "<div><dt>Percentage</dt><dd>" + s.percent.toFixed(1) + "%</dd></div>" +
@@ -210,7 +214,7 @@
       '<span class="honour-place">' + PLACE[place - 1] + " position</span>" +
       '<span class="honour-rank">' + place + "</span>" +
       '<span class="honour-name">' + esc(s.name) + "</span>" +
-      '<span class="honour-roll">Roll No. ' + esc(s.roll) + "</span>" +
+      '<span class="honour-roll">' + rollLabel(s) + "</span>" +
       '<span class="honour-score">' + s.marks + '<small>/' + total + "</small></span>" +
       '<span class="honour-bar"><i style="width:' + s.percent.toFixed(1) + '%"></i></span>' +
       '<span class="honour-pct">' + s.percent.toFixed(1) + "%</span>" +
@@ -218,7 +222,7 @@
   }
 
   function rowMeta(s) {
-    return "Roll No. " + esc(s.roll) + (s.cls ? " &middot; Class " + esc(s.cls) : "");
+    return rollLabel(s) + (s.cls ? " &middot; Class " + esc(s.cls) : "");
   }
 
   function row(s) {
@@ -277,6 +281,8 @@
       '<div id="searchResult" class="search-result" hidden></div>' +
     "</section>" +
 
+    '<p class="reject-note"><strong>Not in the list?</strong> Search your name or roll number above to see your statement of marks. If your name or roll number does not appear anywhere in this merit list, your candidature has been rejected for low marks.</p>' +
+
     '<section class="panel">' +
       '<div class="panel-head"><h3>Top 10 results</h3><span class="panel-hint">Ranks 1&ndash;10</span></div>' +
       '<div class="table">' + tableHead() + topTens.map(row).join("") + "</div>" +
@@ -303,7 +309,7 @@
 
       '<div class="ms-fields">' +
         '<div class="ms-field"><span>Candidate</span><strong>' + esc(s.name) + "</strong></div>" +
-        '<div class="ms-field"><span>Roll No.</span><strong>' + esc(s.roll) + "</strong></div>" +
+        '<div class="ms-field"><span>Roll No.</span><strong>' + (s.roll ? esc(s.roll) : "Not given") + "</strong></div>" +
         '<div class="ms-field"><span>Class</span><strong>' + (s.cls ? esc(s.cls) : "&mdash;") + "</strong></div>" +
         '<div class="ms-field"><span>Rank</span><strong>' + s.rank + " of " + ranked.length + "</strong></div>" +
         '<div class="ms-field"><span>Status</span><strong class="' + (passed ? "ok" : "no") + '">' + (passed ? "Passed" : "Not passed") + "</strong></div>" +
