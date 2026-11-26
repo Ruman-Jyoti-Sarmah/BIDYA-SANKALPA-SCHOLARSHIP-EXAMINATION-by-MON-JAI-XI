@@ -49,9 +49,9 @@ const ANSWER_KEY = [
    classes. */
 const STUDENTS = [
   /* top 10 */
-  { roll: "13", name: "Debarchana Deka",          marks: 54, cls: "6", photo: "" },
-  { roll: "22", name: "Harshita Kalita",          marks: 47, cls: "7", photo: "" },
-  { roll: "19", name: "Prisha Kakati",            marks: 46, cls: "6", photo: "" },
+  { roll: "13", name: "Debarchana Deka",          marks: 54, cls: "6", photo: "assets/students/topper-1.jpg" },
+  { roll: "22", name: "Harsita Kalita",           marks: 47, cls: "7", photo: "assets/students/topper-2.jpg" },
+  { roll: "19", name: "Prisha Kakati",            marks: 46, cls: "6", photo: "assets/students/topper-3.jpg" },
   { roll: "16", name: "Arnab Patgiri",            marks: 44, cls: "8", photo: "" },
   { roll: "08", name: "Sneha Priya Talukdar",     marks: 43, cls: "9", photo: "" },
   { roll: "26", name: "Mayukh Ranjan Patgiri",    marks: 43, cls: "6", photo: "" },
