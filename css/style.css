@@ -1666,10 +1666,16 @@ body.has-promo { overflow: hidden; }
   }
   .hero-copy { padding: 26px 22px 30px; }
 
-  .slide-topper { grid-template-columns: 1fr; grid-template-rows: 220px auto; min-height: 0; }
+  /* mobile: show the whole portrait, never a cropped strip */
+  .slide-topper { grid-template-columns: 1fr; grid-template-rows: none; min-height: 0; }
+  .topper-photo { aspect-ratio: 4 / 5; padding: 12px; }
+  .topper-photo img { width: 100%; height: 100%; object-fit: contain; object-position: center center !important; transform: none; }
+  .topper-photo::after { display: none; }
+  .slide-topper.is-active .topper-photo img { transform: none; }
   .topper-body { padding: 22px; }
   .topper-facts { margin: 20px 0 22px; }
   .topper-body .btn { align-self: stretch; }
+  .rank-chip { top: 12px; left: 12px; font-size: 19px; padding: 6px 10px 7px; }
 
   .highlights { grid-template-columns: 1fr 1fr; padding: 4px 0; }
   .highlights li { padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--line-soft); }
