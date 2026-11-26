@@ -281,7 +281,7 @@
       '<div id="searchResult" class="search-result" hidden></div>' +
     "</section>" +
 
-    '<p class="reject-note"><strong>Not in the list?</strong> Search your name or roll number above to see your statement of marks. If your name or roll number does not appear anywhere in this merit list, your candidature has been rejected for low marks.</p>' +
+    '<p class="reject-note"><strong>Not in the list?</strong> Search your name or roll number above to see your statement of marks. If your name or roll number does not appear anywhere in this merit list, your candidature stands rejected &mdash; For not follow the instructions.</p>' +
 
     '<section class="panel">' +
       '<div class="panel-head"><h3>Top 10 results</h3><span class="panel-hint">Ranks 1&ndash;10</span></div>' +
