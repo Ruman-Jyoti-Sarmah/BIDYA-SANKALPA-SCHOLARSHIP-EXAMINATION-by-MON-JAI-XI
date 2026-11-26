@@ -386,7 +386,7 @@
       if (!term) { box.innerHTML = classTable(matches); return; }
 
       box.innerHTML = matches.slice(0, 4).map(marksheet).join("") +
-        (matches.length > 1 ? '<p class="multi">' + matches.length + " candidates matched. Refine the search with a roll number.</p>" : "");
+        (matches.length > 1 ? '<p class="multi">' + matches.length + " candidates matched. Choose a class above to narrow it down.</p>" : "");
 
       var printBtn = document.getElementById("printBtn");
       if (printBtn) printBtn.addEventListener("click", function () { window.print(); });
