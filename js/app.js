@@ -227,7 +227,7 @@
 
   function row(s) {
     return '<div class="row">' +
-      '<span class="rank' + (s.rank <= 3 ? " is-top" : "") + '">' + s.rank + "</span>" +
+      '<span class="rank' + (s.rank <= 3 ? " is-top" : "") + '">' + (s.rank <= 10 ? s.rank : "&mdash;") + "</span>" +
       '<span class="who">' + avatar(s, "sm") + '<span class="who-txt"><strong>' + esc(s.name) + "</strong><small>" + rowMeta(s) + "</small></span></span>" +
       '<span class="score">' + s.marks + '<small>/' + total + "</small></span>" +
       '<span class="pct">' + s.percent.toFixed(1) + "%</span>" +
@@ -290,11 +290,11 @@
 
     (restOfList.length ?
       '<section class="panel">' +
-        '<div class="panel-head"><h3>Complete merit list</h3><span class="panel-hint">Ranks 11&ndash;' + ranked.length + "</span></div>" +
+        '<div class="panel-head"><h3>Complete merit list</h3><span class="panel-hint">Not ranked</span></div>' +
         '<div class="table">' + tableHead() + restOfList.map(row).join("") + "</div>" +
       "</section>" : "") +
 
-          '<p class="note">Ranking is decided by total marks on one common merit list for classes 6 to 10; candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
+          '<p class="note">Only the top 10 candidates are ranked; the rest of the list is published in order of total marks on one common merit list for classes 6 to 10, and candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
   }
 
   /* ---------------- marksheet ---------------- */
@@ -311,7 +311,7 @@
         '<div class="ms-field"><span>Candidate</span><strong>' + esc(s.name) + "</strong></div>" +
         '<div class="ms-field"><span>Roll No.</span><strong>' + (s.roll ? esc(s.roll) : "Not given") + "</strong></div>" +
         '<div class="ms-field"><span>Class</span><strong>' + (s.cls ? esc(s.cls) : "&mdash;") + "</strong></div>" +
-        '<div class="ms-field"><span>Rank</span><strong>' + s.rank + " of " + ranked.length + "</strong></div>" +
+        '<div class="ms-field"><span>Rank</span><strong>' + (s.rank <= 10 ? s.rank + " of " + ranked.length : "Not ranked") + "</strong></div>" +
         '<div class="ms-field"><span>Status</span><strong class="' + (passed ? "ok" : "no") + '">' + (passed ? "Passed" : "Not passed") + "</strong></div>" +
       "</div>" +
 
