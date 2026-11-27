@@ -1669,18 +1669,18 @@ body.has-promo { overflow: hidden; }
   .head-inner { padding: 10px 0; }
   .head-nav .nav-link { padding: 7px 10px; font-size: 10.5px; }
 
-  /* keep the opening slide's copy in the middle of the frame, not at the foot */
-  .slide-hero { min-height: 500px; align-items: center; }
+  /* shorter frame on phones, with the copy centred rather than at the foot */
+  .slide-hero { min-height: 0; align-items: center; }
   .slide-bg { object-position: 72% 45%; }
   .slide-scrim {
     background:
       linear-gradient(180deg, rgba(8, 24, 48, 0.55) 0%, rgba(8, 24, 48, 0.82) 45%, rgba(8, 24, 48, 0.96) 100%);
   }
-  .hero-copy { padding: 34px 22px; }
+  .hero-copy { padding: 24px 22px; }
 
   /* mobile: show the whole portrait, never a cropped strip */
   .slide-topper { grid-template-columns: 1fr; grid-template-rows: none; min-height: 0; }
-  .topper-photo { aspect-ratio: 4 / 5; padding: 12px; }
+  .topper-photo { aspect-ratio: 6 / 5; padding: 10px; }
   .topper-photo img { width: 100%; height: 100%; object-fit: contain; object-position: center center !important; transform: none; }
   .topper-photo::after { display: none; }
   .slide-topper.is-active .topper-photo img { transform: none; }
