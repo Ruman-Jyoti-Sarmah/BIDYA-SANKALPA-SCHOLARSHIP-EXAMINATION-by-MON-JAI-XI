@@ -79,14 +79,12 @@
   /* ---------------- statistics ---------------- */
   var stats = (function () {
     var top = ranked[0];
-    var passMark = Math.ceil(total * 0.4);
     return {
       appeared: ranked.length,
       /* everyone on record, shown as "120+" on the site */
       candidates: STUDENTS.length,
       highest: top ? top.marks : 0,
-      highestPercent: top ? top.percent : 0,
-      passed: ranked.filter(function (s) { return s.marks >= passMark; }).length
+      highestPercent: top ? top.percent : 0
     };
   })();
 
@@ -278,7 +276,6 @@
     '<section class="stats">' +
       '<div class="stat"><span>Candidates</span><strong>' + stats.candidates + "+</strong></div>" +
       '<div class="stat"><span>Highest score</span><strong>' + stats.highest + "<small>/" + total + "</small></strong></div>" +
-      '<div class="stat"><span>Passed</span><strong>' + stats.passed + "<small>of " + stats.candidates + "</small></strong></div>" +
     "</section>" +
 
     '<section class="honour-board" aria-label="Top three rank holders">' +
@@ -306,8 +303,6 @@
       "</form>" +
       '<div id="searchResult" class="search-result" hidden></div>' +
     "</section>" +
-
-    '<p class="reject-note"><strong>Not in the list?</strong> Search your name or roll number above to see your statement of marks. Candidates who did not follow the instructions, or whose candidature was cancelled, are listed with that status at the end of this page.</p>' +
 
     '<section class="panel">' +
       '<div class="panel-head"><h3>Top 10 results</h3><span class="panel-hint">Ranks 1&ndash;10</span></div>' +
@@ -415,7 +410,8 @@
 
         box.innerHTML = '<p class="empty">No candidate found' + (cls ? " in Class " + esc(cls) : "") +
           (term ? " for &ldquo;" + esc(query.trim()) + "&rdquo;" : "") +
-          ". Check the spelling of the name, the roll number or the class and try again.</p>";
+          '. Check the spelling of the name, the roll number or the class and try again.</p>' +
+          '<p class="reject-note"><strong>Not in the list?</strong> Candidates who did not follow the instructions, or whose candidature was cancelled, are listed with that status at the end of this page.</p>';
         return;
       }
 
