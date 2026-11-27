@@ -326,8 +326,8 @@
 
   /* ---------------- marksheet ---------------- */
   function marksheet(s) {
-    var passed = !s.status && s.marks >= Math.ceil(total * 0.4);
-    var statusText = s.status || (passed ? "Passed" : "Not passed");
+    /* every candidate who appeared has passed; rejected and cancelled keep their status */
+    var statusText = s.status || "Passed";
     return '<article class="marksheet">' +
       '<header class="ms-head">' +
         '<img class="ms-logo" src="' + esc(EXAM.logo) + '" alt="" />' +
@@ -340,7 +340,7 @@
         '<div class="ms-field"><span>Roll No.</span><strong>' + (s.roll ? esc(s.roll) : "Not given") + "</strong></div>" +
         '<div class="ms-field"><span>Class</span><strong>' + (s.cls ? esc(s.cls) : "&mdash;") + "</strong></div>" +
         '<div class="ms-field"><span>Rank</span><strong>' + (!s.status && s.rank <= 10 ? s.rank + " of " + ranked.length : "Not ranked") + "</strong></div>" +
-        '<div class="ms-field"><span>Status</span><strong class="' + (s.status || !passed ? "no" : "ok") + '">' + statusText + "</strong></div>" +
+        '<div class="ms-field"><span>Status</span><strong class="' + (s.status ? "no" : "ok") + '">' + statusText + "</strong></div>" +
       "</div>" +
 
       '<div class="ms-scores">' +
