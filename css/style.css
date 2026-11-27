@@ -1333,6 +1333,17 @@ h1, h2, h3, h4 {
 .score { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--navy); font-variant-numeric: tabular-nums; }
 .score small { font-family: var(--sans); font-size: 10px; font-weight: 400; color: var(--muted); margin-left: 1px; }
 
+/* rejected / cancelled candidature keeps the marks column as a word */
+.score-status {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
 .pct { font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
 
 /* ---------------- avatars ---------------- */

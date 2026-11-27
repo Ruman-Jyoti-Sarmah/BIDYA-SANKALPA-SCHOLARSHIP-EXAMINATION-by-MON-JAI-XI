@@ -12,8 +12,10 @@
 
   /* ---------------- ranking ---------------- */
   var ranked = (function () {
-    /* marks only: ties keep the order in which they were entered */
-    var sorted = STUDENTS.slice().sort(function (a, b) {
+    /* marks only: ties keep the order in which they were entered;
+       rejected or cancelled candidatures carry a status instead of marks
+       and stay out of the ranking */
+    var sorted = STUDENTS.filter(function (s) { return !s.status; }).sort(function (a, b) {
       return b.marks - a.marks;
     });
     var lastMarks = null;
@@ -28,11 +30,32 @@
         marks: s.marks,
         cls: s.cls ? String(s.cls) : "",
         photo: s.photo || "",
+        status: "",
         rank: rank,
         percent: (s.marks / total) * 100
       };
     });
   })();
+
+  /* candidates whose candidature was rejected or cancelled */
+  var withheld = STUDENTS.filter(function (s) { return !!s.status; }).map(function (s) {
+    return {
+      roll: s.roll,
+      name: s.name,
+      marks: null,
+      cls: s.cls ? String(s.cls) : "",
+      photo: s.photo || "",
+      status: s.status,
+      rank: null,
+      percent: 0
+    };
+  }).sort(function (a, b) {
+    if (a.cls !== b.cls) return parseFloat(a.cls) - parseFloat(b.cls);
+    return a.name.localeCompare(b.name);
+  });
+
+  /* every name on record, ranked or withheld, for the search box */
+  var everyCandidate = ranked.concat(withheld);
 
   /* classes offered in the filter: taken from EXAM.classes (classes 6-10),
      or from the student data when that list is missing */
@@ -226,11 +249,14 @@
   }
 
   function row(s) {
-    return '<div class="row">' +
-      '<span class="rank' + (s.rank <= 3 ? " is-top" : "") + '">' + (s.rank <= 10 ? s.rank : "&mdash;") + "</span>" +
+    var out = !!s.status;
+    return '<div class="row' + (out ? " is-out" : "") + '">' +
+      '<span class="rank' + (!out && s.rank <= 3 ? " is-top" : "") + '">' + (!out && s.rank <= 10 ? s.rank : "&mdash;") + "</span>" +
       '<span class="who">' + avatar(s, "sm") + '<span class="who-txt"><strong>' + esc(s.name) + "</strong><small>" + rowMeta(s) + "</small></span></span>" +
-      '<span class="score">' + s.marks + '<small>/' + total + "</small></span>" +
-      '<span class="pct">' + s.percent.toFixed(1) + "%</span>" +
+      (out
+        ? '<span class="score score-status">' + esc(s.status) + "</span>"
+        : '<span class="score">' + s.marks + '<small>/' + total + "</small></span>") +
+      '<span class="pct">' + (out ? "&mdash;" : s.percent.toFixed(1) + "%") + "</span>" +
     "</div>";
   }
 
@@ -281,7 +307,7 @@
       '<div id="searchResult" class="search-result" hidden></div>' +
     "</section>" +
 
-    '<p class="reject-note"><strong>Not in the list?</strong> Search your name or roll number above to see your statement of marks. If your name or roll number does not appear anywhere in this merit list, your candidature stands rejected &mdash; For not follow the instructions.</p>' +
+    '<p class="reject-note"><strong>Not in the list?</strong> Search your name or roll number above to see your statement of marks. Candidates who did not follow the instructions, or whose candidature was cancelled, are listed with that status at the end of this page.</p>' +
 
     '<section class="panel">' +
       '<div class="panel-head"><h3>Top 10 results</h3><span class="panel-hint">Ranks 1&ndash;10</span></div>' +
@@ -294,12 +320,19 @@
         '<div class="table">' + tableHead() + restOfList.map(row).join("") + "</div>" +
       "</section>" : "") +
 
+    (withheld.length ?
+      '<section class="panel">' +
+        '<div class="panel-head"><h3>Rejected &amp; cancelled</h3><span class="panel-hint">" + withheld.length + " candidates</span></div>' +
+        '<div class="table">' + tableHead() + withheld.map(row).join("") + "</div>" +
+      "</section>" : "") +
+
           '<p class="note">Only the top 10 candidates are ranked; the rest of the list is published in order of total marks on one common merit list for classes 6 to 10, and candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
   }
 
   /* ---------------- marksheet ---------------- */
   function marksheet(s) {
-    var passed = s.marks >= Math.ceil(total * 0.4);
+    var passed = !s.status && s.marks >= Math.ceil(total * 0.4);
+    var statusText = s.status || (passed ? "Passed" : "Not passed");
     return '<article class="marksheet">' +
       '<header class="ms-head">' +
         '<img class="ms-logo" src="' + esc(EXAM.logo) + '" alt="" />' +
@@ -311,13 +344,16 @@
         '<div class="ms-field"><span>Candidate</span><strong>' + esc(s.name) + "</strong></div>" +
         '<div class="ms-field"><span>Roll No.</span><strong>' + (s.roll ? esc(s.roll) : "Not given") + "</strong></div>" +
         '<div class="ms-field"><span>Class</span><strong>' + (s.cls ? esc(s.cls) : "&mdash;") + "</strong></div>" +
-        '<div class="ms-field"><span>Rank</span><strong>' + (s.rank <= 10 ? s.rank + " of " + ranked.length : "Not ranked") + "</strong></div>" +
-        '<div class="ms-field"><span>Status</span><strong class="' + (passed ? "ok" : "no") + '">' + (passed ? "Passed" : "Not passed") + "</strong></div>" +
+        '<div class="ms-field"><span>Rank</span><strong>' + (!s.status && s.rank <= 10 ? s.rank + " of " + ranked.length : "Not ranked") + "</strong></div>" +
+        '<div class="ms-field"><span>Status</span><strong class="' + (s.status || !passed ? "no" : "ok") + '">' + statusText + "</strong></div>" +
       "</div>" +
 
       '<div class="ms-scores">' +
-        '<div class="ms-cell"><span>Marks obtained</span><strong>' + s.marks + "<small>/" + total + "</small></strong></div>" +
-        '<div class="ms-cell"><span>Percentage</span><strong>' + s.percent.toFixed(1) + "%</strong></div>" +
+        (s.status
+          ? '<div class="ms-cell"><span>Marks obtained</span><strong>&mdash;</strong></div>' +
+            '<div class="ms-cell"><span>Percentage</span><strong>&mdash;</strong></div>'
+          : '<div class="ms-cell"><span>Marks obtained</span><strong>' + s.marks + "<small>/" + total + "</small></strong></div>" +
+            '<div class="ms-cell"><span>Percentage</span><strong>' + s.percent.toFixed(1) + "%</strong></div>") +
       "</div>" +
 
       '<footer class="ms-foot">' +
@@ -341,7 +377,7 @@
 
     function candidates() {
       var cls = chosenClass();
-      return cls ? ranked.filter(function (s) { return s.cls === cls; }) : ranked;
+      return cls ? everyCandidate.filter(function (s) { return s.cls === cls; }) : everyCandidate;
     }
 
     function classTable(list) {
