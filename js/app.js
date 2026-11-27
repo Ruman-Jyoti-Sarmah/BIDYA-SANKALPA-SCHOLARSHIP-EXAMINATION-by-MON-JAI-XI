@@ -50,7 +50,6 @@
       percent: 0
     };
   }).sort(function (a, b) {
-    if (a.cls !== b.cls) return parseFloat(a.cls) - parseFloat(b.cls);
     return a.name.localeCompare(b.name);
   });
 
@@ -95,7 +94,10 @@
 
   /* ranks 1-10 including everyone who shares 10th place */
   var topTens = ranked.filter(function (s) { return s.rank <= 10; });
-  var restOfList = ranked.filter(function (s) { return s.rank > 10; });
+  /* everyone outside the top 10 is listed alphabetically by name */
+  var restOfList = ranked.filter(function (s) { return s.rank > 10; }).sort(function (a, b) {
+    return a.name.localeCompare(b.name);
+  });
 
   /* ---------------- helpers ---------------- */
   function rollLabel(s) {
@@ -324,7 +326,7 @@
         '<div class="table">' + tableHead() + withheld.map(row).join("") + "</div>" +
       "</section>" : "") +
 
-          '<p class="note">Only the top 10 candidates are ranked; the rest of the list is published in order of total marks on one common merit list for classes 6 to 10, and candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
+          '<p class="note">Only the top 10 candidates are ranked; every other candidate is listed alphabetically by name, and candidates with equal marks share a rank. Choose a class above the list to see that class on its own.</p>';
   }
 
   /* ---------------- marksheet ---------------- */
