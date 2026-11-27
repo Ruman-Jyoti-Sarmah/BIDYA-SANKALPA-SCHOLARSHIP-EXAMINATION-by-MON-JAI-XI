@@ -79,14 +79,14 @@
 
   /* ---------------- statistics ---------------- */
   var stats = (function () {
-    var sum = ranked.reduce(function (t, s) { return t + s.marks; }, 0);
     var top = ranked[0];
     var passMark = Math.ceil(total * 0.4);
     return {
       appeared: ranked.length,
+      /* everyone on record, shown as "120+" on the site */
+      candidates: STUDENTS.length,
       highest: top ? top.marks : 0,
       highestPercent: top ? top.percent : 0,
-      average: ranked.length ? (sum / (ranked.length * total)) * 100 : 0,
       passed: ranked.filter(function (s) { return s.marks >= passMark; }).length
     };
   })();
@@ -148,7 +148,7 @@
           '<a class="link-light" href="#answers">Answer sheet</a>' +
         "</div>" +
       "</div>" +
-      '<p class="slide-caption">' + stats.appeared + " candidates &middot; " + total + " marks &middot; Session " + EXAM.session + "</p>" +
+      '<p class="slide-caption">' + stats.candidates + "+ candidates &middot; " + total + " marks &middot; Session " + EXAM.session + "</p>" +
     "</article>";
   }
 
@@ -186,9 +186,8 @@
 
   function highlights() {
     return '<ul class="highlights">' +
-      "<li><span>Candidates</span><strong>" + stats.appeared + "</strong></li>" +
+      "<li><span>Candidates</span><strong>" + stats.candidates + "+</strong></li>" +
       "<li><span>Highest score</span><strong>" + stats.highest + "<small>/" + total + "</small></strong></li>" +
-      "<li><span>School average</span><strong>" + stats.average.toFixed(1) + "%</strong></li>" +
       "<li><span>Answer key</span><strong>Published</strong></li>" +
     "</ul>";
   }
@@ -208,7 +207,7 @@
           '<span class="notice-title">' + EXAM.resultLabel + "</span>" +
           '<span class="notice-desc">Rank holders, the complete merit list, and your own statement of marks by name or roll number.</span>' +
         "</span>" +
-        '<span class="notice-meta"><span>' + stats.appeared + " candidates</span><span>" + total + " marks</span></span>" +
+        '<span class="notice-meta"><span>' + stats.candidates + "+ candidates</span><span>" + total + " marks</span></span>" +
         '<span class="notice-arrow">' + ICON.arrow + "</span>" +
       "</a>" +
 
@@ -275,10 +274,9 @@
     "</header>" +
 
     '<section class="stats">' +
-      '<div class="stat"><span>Students appeared</span><strong>' + stats.appeared + "</strong></div>" +
+      '<div class="stat"><span>Candidates</span><strong>' + stats.candidates + "+</strong></div>" +
       '<div class="stat"><span>Highest score</span><strong>' + stats.highest + "<small>/" + total + "</small></strong></div>" +
-      '<div class="stat"><span>School average</span><strong>' + stats.average.toFixed(1) + "%</strong></div>" +
-      '<div class="stat"><span>Passed</span><strong>' + stats.passed + "<small>of " + stats.appeared + "</small></strong></div>" +
+      '<div class="stat"><span>Passed</span><strong>' + stats.passed + "<small>of " + stats.candidates + "</small></strong></div>" +
     "</section>" +
 
     '<section class="honour-board" aria-label="Top three rank holders">' +
